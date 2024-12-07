@@ -89,24 +89,30 @@ Where:
 
 1. **Prediction**:
    - Predicted state:  
-     `x_k^- = f(x_(k-1), u_k)`
-
+     ```
+     x_k^- = f(x_(k-1), u_k)
+     ```
    - Predicted error covariance:  
-     `P_k^- = F_k * P_(k-1) * F_k^T + Q`
-
+     ```
+     P_k^- = F_k * P_(k-1) * F_k^T + Q
+     ```
    - `F_k`: Jacobian of the state transition function `f`.
 
 2. **Update**:
    - Kalman Gain:  
-     `K_k = P_k^- * H_k^T * (H_k * P_k^- * H_k^T + R)^-1`
-
+     ```
+     K_k = P_k^- * H_k^T * (H_k * P_k^- * H_k^T + R)^-1
+     ```
    - Updated state:  
-     `x_k = x_k^- + K_k * (y_k - h(x_k^-))`
-
+     ```
+     x_k = x_k^- + K_k * (y_k - h(x_k^-))
+     ```
    - Updated error covariance:  
-     `P_k = (I - K_k * H_k) * P_k^-`
-
+     ```
+     P_k = (I - K_k * H_k) * P_k^-
+     ```
    - `H_k`: Jacobian of the measurement function `h`.
+
 
 ---
 
