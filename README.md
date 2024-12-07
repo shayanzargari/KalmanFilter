@@ -25,7 +25,7 @@ The Kalman Filter is an optimal recursive estimation algorithm used to estimate 
 A linear dynamical system is described as:
 
 - **State update equation**:  
-  $x_k = A \cdot x_{k-1} + B \cdot u_k + w_k$
+  $\mathbf{x}_k = A \cdot x_{k-1} + B \cdot u_k + w_k$
 
 - **Measurement equation**:  
   $y_k = C \cdot x_k + v_k$
