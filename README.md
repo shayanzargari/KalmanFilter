@@ -25,20 +25,20 @@ The Kalman Filter is an optimal recursive estimation algorithm used to estimate 
 A linear dynamical system is described as:
 
 - **State update equation**:  
-  $\mathbf{x}_k = A \cdot x_{k-1} + B \cdot u_k + w_k$
+  $$ \mathbf{x}_k = \mathbf{A} \mathbf{x}_{k-1} + \mathbf{B} \mathbf{u}_k + \mathbf{w}_k $$
 
 - **Measurement equation**:  
-  $y_k = C \cdot x_k + v_k$
+  $$ \mathbf{y}_k = \mathbf{C} \mathbf{x}_k + \mathbf{v}_k $$
 
 Where:
-- $x_k$: State vector at time $k$.
-- $A$: State transition matrix.
-- $B$: Control input matrix.
-- $u_k$: Control input.
-- $y_k$: Measurement vector.
-- $C$: Measurement matrix.
-- $w_k$: Process noise, $w_k \sim N(0, Q)$.
-- $v_k$: Measurement noise, $v_k \sim N(0, R)$.
+- \( \mathbf{x}_k \): State vector at time \( k \).
+- \( \mathbf{A} \): State transition matrix.
+- \( \mathbf{B} \): Control input matrix.
+- \( \mathbf{u}_k \): Control input vector.
+- \( \mathbf{y}_k \): Measurement vector.
+- \( \mathbf{C} \): Measurement matrix.
+- \( \mathbf{w}_k \): Process noise, \( \mathbf{w}_k \sim \mathcal{N}(0, \mathbf{Q}) \).
+- \( \mathbf{v}_k \): Measurement noise, \( \mathbf{v}_k \sim \mathcal{N}(0, \mathbf{R}) \).
 
 ---
 
@@ -49,23 +49,23 @@ Where:
 Predict the state and covariance for the next time step:
 
 - Predicted state:  
-  $x_k^- = A \cdot x_{k-1} + B \cdot u_k$
+  $$ \mathbf{x}_k^- = \mathbf{A} \mathbf{x}_{k-1} + \mathbf{B} \mathbf{u}_k $$
 
 - Predicted error covariance:  
-  $P_k^- = A \cdot P_{k-1} \cdot A^T + Q$
+  $$ \mathbf{P}_k^- = \mathbf{A} \mathbf{P}_{k-1} \mathbf{A}^\top + \mathbf{Q} $$
 
 ### 2. Update
 
 Refine the state estimate and covariance using the measurement:
 
 - Kalman Gain:  
-  $K_k = P_k^- \cdot C^T \cdot (C \cdot P_k^- \cdot C^T + R)^{-1}$
+  $$ \mathbf{K}_k = \mathbf{P}_k^- \mathbf{C}^\top \left( \mathbf{C} \mathbf{P}_k^- \mathbf{C}^\top + \mathbf{R} \right)^{-1} $$
 
 - Updated state:  
-  $x_k = x_k^- + K_k \cdot (y_k - C \cdot x_k^-)$
+  $$ \mathbf{x}_k = \mathbf{x}_k^- + \mathbf{K}_k \left( \mathbf{y}_k - \mathbf{C} \mathbf{x}_k^- \right) $$
 
 - Updated error covariance:  
-  $P_k = (I - K_k \cdot C) \cdot P_k^-$
+  $$ \mathbf{P}_k = \left( \mathbf{I} - \mathbf{K}_k \mathbf{C} \right) \mathbf{P}_k^- $$
 
 ---
 
@@ -76,32 +76,32 @@ The EKF extends the Kalman Filter to handle nonlinear systems by linearizing the
 ### Nonlinear System Model
 
 - **State update equation**:  
-  $x_k = f(x_{k-1}, u_k) + w_k$
+  $$ \mathbf{x}_k = \mathbf{f}(\mathbf{x}_{k-1}, \mathbf{u}_k) + \mathbf{w}_k $$
 
 - **Measurement equation**:  
-  $y_k = h(x_k) + v_k$
+  $$ \mathbf{y}_k = \mathbf{h}(\mathbf{x}_k) + \mathbf{v}_k $$
 
 Where:
-- $f$: Nonlinear state transition function.
-- $h$: Nonlinear measurement function.
+- \( \mathbf{f} \): Nonlinear state transition function.
+- \( \mathbf{h} \): Nonlinear measurement function.
 
 ### Steps in EKF
 
 1. **Prediction**:
    - Predicted state:  
-     $x_k^- = f(x_{k-1}, u_k)$
+     $$ \mathbf{x}_k^- = \mathbf{f}(\mathbf{x}_{k-1}, \mathbf{u}_k) $$
    - Predicted error covariance:  
-     $P_k^- = F_k \cdot P_{k-1} \cdot F_k^T + Q$
-   - $F_k$: Jacobian of the state transition function $f$.
+     $$ \mathbf{P}_k^- = \mathbf{F}_k \mathbf{P}_{k-1} \mathbf{F}_k^\top + \mathbf{Q} $$
+   - \( \mathbf{F}_k \): Jacobian of the state transition function \( \mathbf{f} \).
 
 2. **Update**:
    - Kalman Gain:  
-     $K_k = P_k^- \cdot H_k^T \cdot (H_k \cdot P_k^- \cdot H_k^T + R)^{-1}$
+     $$ \mathbf{K}_k = \mathbf{P}_k^- \mathbf{H}_k^\top \left( \mathbf{H}_k \mathbf{P}_k^- \mathbf{H}_k^\top + \mathbf{R} \right)^{-1} $$
    - Updated state:  
-     $x_k = x_k^- + K_k \cdot (y_k - h(x_k^-))$
+     $$ \mathbf{x}_k = \mathbf{x}_k^- + \mathbf{K}_k \left( \mathbf{y}_k - \mathbf{h}(\mathbf{x}_k^-) \right) $$
    - Updated error covariance:  
-     $P_k = (I - K_k \cdot H_k) \cdot P_k^-$
-   - $H_k$: Jacobian of the measurement function $h$.
+     $$ \mathbf{P}_k = \left( \mathbf{I} - \mathbf{K}_k \mathbf{H}_k \right) \mathbf{P}_k^- $$
+   - \( \mathbf{H}_k \): Jacobian of the measurement function \( \mathbf{h} \).
 
 ---
 
